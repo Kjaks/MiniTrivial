@@ -65,13 +65,13 @@ public class Main {
                         case 2:
                         do {
                             System.out.println("2.Respuesta multiple\nIngrese la respuesta correcta: ");
-                                respuesta += "/" + sc.nextLine() + "*" + "/";
+                                respuesta += "/" + sc.nextLine() + "*";
 
                             System.out.println("Ingrese la respuesta incorrecta 1: ");
                                 respuesta += "/" + sc.nextLine() + "/";
 
                             System.out.println("Ingrese la respuesta incorrecta 2: ");
-                                respuesta += "/" + sc.nextLine() + "/";
+                                respuesta += sc.nextLine() + "/";
 
                             if(respuesta.length() > 1024) System.out.println("Las respuestas no pueden tener más de 1024 caracteres!");
                         } while (respuesta.length() > 1024);
@@ -81,9 +81,9 @@ public class Main {
                             System.out.println("Ingrese la respuesta correcta: ");
                             do {
                                 respuesta = sc.nextLine();
-                                if (!respuesta.equals("si") || !respuesta.equals("no"))
+                                if (!respuesta.equals("si") && !respuesta.equals("no"))
                                     System.out.println("La respuesta debe ser si o no!");
-                            } while (!respuesta.equals("si") || !respuesta.equals("no"));
+                            } while (!respuesta.equals("si") && !respuesta.equals("no"));                            
 
                             break;
                     }
@@ -95,6 +95,18 @@ public class Main {
                     System.out.println(mt.leer());
                     break;
                 case 3:
+                    int contador = mt.getConteo();
+
+                    System.out.println("Ingrese la id de la pregunta que quires buscar (Ingresa un numero del 0 al " + (contador - 1)+ "): ");
+                    
+                    do {
+                        eleccion = sc.nextInt();
+                        if (eleccion < 1 || eleccion > (contador - 1))
+                            System.out.println("Escriba un numero del 1 al " + (contador - 1) + "!");
+                    } while (eleccion < 1 || eleccion > (contador - 1));
+
+                    System.out.println(mt.buscar(eleccion));
+
                     break;
                 case 4:
                     break;

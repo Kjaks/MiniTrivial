@@ -3,9 +3,10 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 
 public class MiniTrivial {
-    private int contador = conteo();
+    private int contador;
 
      public void guardar(String pregunta, int tipo, int categoria, boolean borrado, String respuesta){
+        conteo();
         StringBuffer preguntaFormateada = new StringBuffer(pregunta);
         preguntaFormateada.setLength(1024);
         
@@ -28,7 +29,8 @@ public class MiniTrivial {
   
             RandomAccessFile WriterResp = new RandomAccessFile("Respuestas.dat","rw");
             StringBuffer respuestaFormateada = new StringBuffer(respuesta);
-            preguntaFormateada.setLength(1024);
+
+            respuestaFormateada.setLength(1024);
 
             WriterResp.seek(WriterResp.length());
                 // Int 4 bytes
@@ -47,36 +49,48 @@ public class MiniTrivial {
     }
 
     public String leer(){
+        conteo();
         String pregunta = "";
         try {
-            RandomAccessFile ReaderPreg = new RandomAccessFile("Preguntas.dat", "r");
-            ReaderPreg.seek(0);
-    
-            pregunta += "id: " + ReaderPreg.readInt() + "\n";
-    
-            pregunta += "tipo: " + ReaderPreg.readInt() + "\n";
-    
-            pregunta += "categoria: " + ReaderPreg.readInt() + "\n";
-    
-            pregunta += "pregunta: ";
-    
-            for (int i = 0; i < 1024; i++){
-                pregunta += ReaderPreg.readChar();
+                RandomAccessFile ReaderPreg = new RandomAccessFile("Preguntas.dat", "r");
+                RandomAccessFile ReaderResp = new RandomAccessFile("Respuestas.dat", "r");
+
+                for(int i = 0; i < contador; i++){
+
+                ReaderPreg.seek(i * 2061);
+        
+                pregunta += "\nid: " + ReaderPreg.readInt() + "\n";
+        
+                pregunta += "tipo: " + ReaderPreg.readInt() + "\n";
+        
+                pregunta += "categoria: " + ReaderPreg.readInt() + "\n";
+        
+                pregunta += "pregunta: ";
+        
+                for (int j = 0; j < 1024; j++){
+                    pregunta += ReaderPreg.readChar();
+                }
+
+                pregunta += "\n";
+
+                ReaderResp.seek(i * 2052);
+        
+                ReaderResp.readInt();
+
+                pregunta += "respuesta: ";
+                
+                for (int k = 0; k < 1024; k++){
+                    pregunta += ReaderResp.readChar();
+                }
+
+                pregunta += "\n";
+
+                for(int j = 0; j < 132; j++){
+                    pregunta += "-";
+                }
+        
             }
-
-            pregunta += "\n";
-            System.out.println(ReaderPreg.length());
-
             ReaderPreg.close();
-
-            RandomAccessFile ReaderResp = new RandomAccessFile("Respuestas.dat", "r");
-            ReaderResp.seek(0);
-    
-            pregunta += "respuesta: ";
-            for (int i = 0; i < 1024; i++){
-                pregunta += ReaderResp.readChar();
-            }
-    
             ReaderResp.close();  
         } catch (IOException e) {
             e.printStackTrace(); 
@@ -84,7 +98,7 @@ public class MiniTrivial {
         return pregunta;
     }
 
-    public int conteo() {
+    public void conteo() {
     int conteo = 0;
     File archivo = new File("Preguntas.dat");
 
@@ -94,8 +108,58 @@ public class MiniTrivial {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        }
+    contador = conteo;
+    
     }
-    return conteo;
-}
 
+    public String buscar(int id){
+        String pregunta = "";
+        try {
+                RandomAccessFile ReaderPreg = new RandomAccessFile("Preguntas.dat", "r");
+                RandomAccessFile ReaderResp = new RandomAccessFile("Respuestas.dat", "r");
+
+                ReaderPreg.seek(id * 2061);
+        
+                pregunta += "\nid: " + ReaderPreg.readInt() + "\n";
+        
+                ReaderPreg.readInt();
+        
+                ReaderPreg.readInt();
+                
+                ReaderPreg.seek(id * 2061);
+
+                pregunta += "pregunta: ";
+        
+                for (int j = 0; j < 1024; j++){
+                    pregunta += ReaderPreg.readChar();
+                }
+
+                pregunta += "\n";
+
+                ReaderResp.seek(id * 2052);
+        
+                ReaderResp.readInt();
+
+                pregunta += "respuesta: ";
+                
+                for (int k = 0; k < 1024; k++){
+                    pregunta += ReaderResp.readChar();
+                }
+
+                pregunta += "\n";
+        
+            ReaderPreg.close();
+            ReaderResp.close();  
+        } catch (IOException e) {
+            e.printStackTrace(); 
+        }
+        return pregunta;
+    }
+
+    public int getConteo(){
+        conteo();
+        return contador;
+    }
+    
 }
