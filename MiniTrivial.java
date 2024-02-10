@@ -88,7 +88,7 @@ public class MiniTrivial {
                 for(int j = 0; j < 132; j++){
                     pregunta += "-";
                 }
-        
+                
             }
             ReaderPreg.close();
             ReaderResp.close();  
@@ -108,7 +108,7 @@ public class MiniTrivial {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        }
+    }
     contador = conteo;
     
     }
@@ -125,6 +125,8 @@ public class MiniTrivial {
         
                 ReaderPreg.readInt();
         
+                ReaderPreg.readInt();
+
                 ReaderPreg.readInt();
                 
                 ReaderPreg.seek(id * 2061);
@@ -161,5 +163,40 @@ public class MiniTrivial {
         conteo();
         return contador;
     }
-    
+
+    public void modificarPregunta(int id,int tipoCambio,String cambioString){
+        StringBuffer cambioStringFormateado = new StringBuffer(cambioString);
+        cambioStringFormateado.setLength(1024);
+        
+        try{
+            if(tipoCambio == 1){    
+                RandomAccessFile WriterPreg = new RandomAccessFile("Preguntas.dat","rw");
+                    WriterPreg.seek(id * 2061);
+
+                    WriterPreg.readInt();
+
+                    WriterPreg.readInt();
+
+                    WriterPreg.readInt();
+
+                    WriterPreg.writeChars(cambioStringFormateado.toString());
+
+                    WriterPreg.close();
+            }
+
+            if(tipoCambio == 2){
+                RandomAccessFile WriterResp = new RandomAccessFile("Respuestas.dat","rw");
+                if(id == 0)WriterResp.seek(4);
+                else WriterResp.seek(id * 2052);
+
+                    WriterResp.readInt();
+
+                    WriterResp.writeChars(cambioStringFormateado.toString());
+                    WriterResp.close();
+            }
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

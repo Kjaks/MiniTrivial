@@ -109,6 +109,43 @@ public class Main {
 
                     break;
                 case 4:
+                    int id; 
+
+                    System.out.println(mt.leer());
+                    System.out.println("Elige el id de la pregunta que quieres modificar: ");
+
+                    do {
+                        id = sc.nextInt();
+                        if (id < 0 || id > (mt.getConteo() - 1))
+                            System.out.println("Escriba un numero del 0 al " + (mt.getConteo() - 1) + "!");
+                    } while (id < 0 || id > (mt.getConteo() - 1));
+
+                    System.out.println(mt.buscar(id));
+
+                    System.out.println("Que quieres modificar?\n1. Pregunta\n2. Respuesta\n");
+                    do {
+                        eleccion = sc.nextInt();
+                        if (eleccion < 1 || eleccion > 3)
+                            System.out.println("Escriba un numero del 1 al 3!");
+                    } while (eleccion < 1 || eleccion > 3);
+
+                    sc.nextLine();
+
+                    switch(eleccion){
+                        case 1:
+                            System.out.println("Ingrese la nueva pregunta: ");
+                            pregunta = sc.nextLine();
+                            mt.modificarPregunta(id, eleccion, pregunta);
+                            break;
+
+                        case 2:
+                            System.out.println("Ingrese la nueva respuesta: ");
+                            respuesta = sc.nextLine();
+                            mt.modificarPregunta(id, eleccion, respuesta);
+                            break;
+
+                    }
+
                     break;
                 case 5:
                     break;
