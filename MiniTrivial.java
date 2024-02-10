@@ -37,7 +37,7 @@ public class MiniTrivial {
                 WriterResp.writeInt(contador);
                 // 2048 bytes
                 WriterResp.writeChars(respuestaFormateada.toString());
-            
+
             //Cada registro mide 2048+4 = 2052 bytes
             WriterResp.close();
 
@@ -51,12 +51,28 @@ public class MiniTrivial {
     public String leer(){
         conteo();
         String pregunta = "";
+        boolean borrado;
         try {
                 RandomAccessFile ReaderPreg = new RandomAccessFile("Preguntas.dat", "r");
                 RandomAccessFile ReaderResp = new RandomAccessFile("Respuestas.dat", "r");
 
                 for(int i = 0; i < contador; i++){
+                borrado = false;
+                
+            
+                ReaderPreg.seek(i * 2061);
 
+                ReaderPreg.readInt();
+                ReaderPreg.readInt();
+                ReaderPreg.readInt();
+                for (int j = 0; j < 1024; j++){
+                    ReaderPreg.readChar();
+                }
+
+                borrado = ReaderPreg.readBoolean();
+                
+                if(borrado == false){
+                
                 ReaderPreg.seek(i * 2061);
         
                 pregunta += "\nid: " + ReaderPreg.readInt() + "\n";
@@ -88,6 +104,8 @@ public class MiniTrivial {
                 for(int j = 0; j < 132; j++){
                     pregunta += "-";
                 }
+            }
+            else pregunta += "";
                 
             }
             ReaderPreg.close();
@@ -115,6 +133,7 @@ public class MiniTrivial {
 
     public String buscar(int id){
         String pregunta = "";
+        boolean borrado = false;
         try {
                 RandomAccessFile ReaderPreg = new RandomAccessFile("Preguntas.dat", "r");
                 RandomAccessFile ReaderResp = new RandomAccessFile("Respuestas.dat", "r");
@@ -128,14 +147,14 @@ public class MiniTrivial {
                 ReaderPreg.readInt();
 
                 ReaderPreg.readInt();
-                
-                ReaderPreg.seek(id * 2061);
 
                 pregunta += "pregunta: ";
         
                 for (int j = 0; j < 1024; j++){
                     pregunta += ReaderPreg.readChar();
                 }
+
+                borrado = ReaderPreg.readBoolean();
 
                 pregunta += "\n";
 
@@ -156,6 +175,7 @@ public class MiniTrivial {
         } catch (IOException e) {
             e.printStackTrace(); 
         }
+        if(borrado == true) pregunta = "La pregunta esta borrada\n";
         return pregunta;
     }
 
@@ -195,6 +215,24 @@ public class MiniTrivial {
                     WriterResp.close();
             }
             
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void borrar(int id){
+        try{
+            RandomAccessFile WriterPreg = new RandomAccessFile("Preguntas.dat","rw");
+                WriterPreg.seek(id * 2061);
+                WriterPreg.readInt();
+                WriterPreg.readInt();
+                WriterPreg.readInt();
+                for (int j = 0; j < 1024; j++){
+                    WriterPreg.readChar();
+                }
+                WriterPreg.writeBoolean(true);
+                WriterPreg.close();
+
         } catch (IOException e) {
             e.printStackTrace();
         }

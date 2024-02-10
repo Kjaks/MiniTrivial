@@ -18,6 +18,7 @@ public class Main {
             System.out.println("7. Salir del programa");
             System.out.println("Seleccione una opción: ");
             eleccion = sc.nextInt();
+            System.out.println();
 
             switch (eleccion) {
                 case 1:
@@ -147,7 +148,19 @@ public class Main {
                     }
 
                     break;
-                case 5:
+                case 5: 
+
+                System.out.println(mt.leer());
+                System.out.println("Elige el id de la pregunta que quieres borrar: ");
+
+                do {
+                    id = sc.nextInt();
+                    if (id < 0 || id > (mt.getConteo() - 1))
+                        System.out.println("Escriba un numero del 0 al " + (mt.getConteo() - 1) + "!");
+                } while (id < 0 || id > (mt.getConteo() - 1));
+
+                mt.borrar(id);
+
                     break;
                 case 6:
                     break;
