@@ -57,7 +57,7 @@ public class Main {
                         case 1:
                             System.out.println("1.Respuesta simple\nIngresa la respuesta: ");
                             do {
-                                respuesta = sc.nextLine();
+                                respuesta = sc.nextLine() + "*";
                                 if (respuesta.length() > 1024)
                                     System.out.println("La respuesta no puede tener más de 1024 caracteres!");
                             } while (respuesta.length() > 1024);
@@ -69,10 +69,10 @@ public class Main {
                                 respuesta += sc.nextLine() + "*";
 
                             System.out.println("Ingrese la respuesta incorrecta 1: ");
-                                respuesta += "/" + sc.nextLine() + "/";
+                                respuesta += "_" + sc.nextLine() + "_";
 
                             System.out.println("Ingrese la respuesta incorrecta 2: ");
-                                respuesta += sc.nextLine() + "/";
+                                respuesta += sc.nextLine() + "_";
 
                             if(respuesta.length() > 1024) System.out.println("Las respuestas no pueden tener más de 1024 caracteres!");
                         } while (respuesta.length() > 1024);
@@ -81,7 +81,7 @@ public class Main {
                         case 3:
                             System.out.println("Ingrese la respuesta correcta: ");
                             do {
-                                respuesta = sc.nextLine();
+                                respuesta = sc.nextLine() + "*";
                                 if (!respuesta.equals("si") && !respuesta.equals("no"))
                                     System.out.println("La respuesta debe ser si o no!");
                             } while (!respuesta.equals("si") && !respuesta.equals("no"));                            
@@ -179,7 +179,8 @@ public class Main {
 
                 } while(mt.buscar(random).equals("-1") || limitador > mt.getConteo());
 
-                if(random >= 0) {preguntaAzar = mt.buscar(random);
+                if(random >= 0) {
+                    preguntaAzar = mt.buscar(random);
                 
                     for(int i = 0,j = 0; i < preguntaAzar.length(); i++){
                         if(preguntaAzar.charAt(i) == '\n') j++;
@@ -193,17 +194,35 @@ public class Main {
                 System.out.println("\n" + respuestaStrings[0]);
 
                 if(respuestaStrings.length == 4){
-                    String conjuntoRespuestas = "";
 
                     random = (int) (Math.random() * 3) + 1;
 
-                    conjuntoRespuestas += respuestaStrings[random] + " ";
+                    for(int i = 4; i < respuestaStrings[random].length(); i++){
+                        if(respuestaStrings[random].charAt(i) != '*') System.out.print(respuestaStrings[random].charAt(i));
+                    }
+
+                    System.out.print(" ");
 
                     for(int i = 1; i < 4;i++){
-                        if(i != random) conjuntoRespuestas += respuestaStrings[i] + " ";
+                        if(i != random){
+                            for(int j = 4; j < respuestaStrings[i].length(); j++){
+                                if(respuestaStrings[i].charAt(j) != '*') System.out.print(respuestaStrings[i].charAt(j));
+                            }
+                            System.out.print(" ");
+                        } 
                     }
-                    System.out.println(conjuntoRespuestas);
+
                 } 
+
+                sc.nextLine();
+
+                System.out.println("\nIntroduce tu respuesta!");
+                String respuestaUsuario = sc.nextLine();
+                
+                int resultado = mt.preguntaCorrecta(respuestaUsuario);
+
+                if(resultado == 1) System.out.println("Respuesta correcta!");
+                else System.out.println("Respuesta incorrecta!");
 
                     
                     break;

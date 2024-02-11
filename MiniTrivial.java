@@ -258,7 +258,7 @@ public class MiniTrivial {
                     for (int k = 0; k < 1024; k++){
                         char c = ReaderResp.readChar();
 
-                        tipoRespuesta[1] += c;
+                        if(c != '\u0000') tipoRespuesta[k] += c;
 
                     }         
                     break;
@@ -273,13 +273,15 @@ public class MiniTrivial {
                     for(int j = 1; j < 4; j++){
 
                         for (int k = 0; k < 1024; k++){
-                            char c = ReaderResp.readChar();
+                            char c = (char) ReaderResp.readByte(); // Leer byte en lugar de char
+                            if (c != '_') {
+                                if(c != '\u0000') tipoRespuesta[j] += c;
 
-                            if(c != '/') tipoRespuesta[j] += c;
+                            }
                             else k = 1025;
-                        }                    
-                    }
+                            }
 
+                    }
                     
                     break;
                 case 3:
@@ -289,7 +291,7 @@ public class MiniTrivial {
                     for (int k = 0; k < 1024; k++){
                         char c = ReaderResp.readChar();
 
-                        tipoRespuesta[1] += c;
+                        if(c != '\u0000') tipoRespuesta[k] += c;
 
                     }         
                     break;
@@ -304,7 +306,7 @@ public class MiniTrivial {
     }
 
     public int preguntaCorrecta(String respuesta){
-        if(tipoRespuesta[1].toLowerCase().equals(respuesta.toLowerCase())) return 1;
+        if(tipoRespuesta[1].toLowerCase().equals("null" + respuesta.toLowerCase() + "*")) return 1;
         else return 0; 
     }
 }
