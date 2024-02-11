@@ -66,7 +66,7 @@ public class Main {
                         case 2:
                         do {
                             System.out.println("2.Respuesta multiple\nIngrese la respuesta correcta: ");
-                                respuesta += "/" + sc.nextLine() + "*";
+                                respuesta += sc.nextLine() + "*";
 
                             System.out.println("Ingrese la respuesta incorrecta 1: ");
                                 respuesta += "/" + sc.nextLine() + "/";
@@ -163,6 +163,34 @@ public class Main {
 
                     break;
                 case 6:
+                String[] respuestaStrings = new String[0];
+                int random;
+                int limitador = 0;
+                String preguntaAzar = "";
+                System.out.println("Pregunta al azar!\n");
+
+                do{
+                    random = (int) (Math.random() * mt.getConteo());
+                    limitador++;
+
+                    if(limitador > mt.getConteo()){ 
+                    System.out.println("No hay preguntas disponibles!");
+                    random = -1;
+                    }
+
+                } while(mt.buscar(random).equals("-1") || limitador > mt.getConteo());
+
+                preguntaAzar = mt.buscar(random);
+                for(int i = 0,j = 0; i < preguntaAzar.length(); i++){
+                    if(preguntaAzar.charAt(i) == '\n') j++;
+                    if(j == 3) break;
+                    System.out.print(preguntaAzar.charAt(i));
+                }
+
+                if(random != -1) respuestaStrings = mt.tipoRespuesta(random);
+
+                System.out.println("\n" + respuestaStrings[0]);
+
                     break;
                 case 7:
                     System.out.println("¡Adios!");

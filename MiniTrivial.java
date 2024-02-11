@@ -150,6 +150,8 @@ public class MiniTrivial {
 
                 pregunta += "pregunta: ";
         
+                ReaderPreg.seek(id * 2061);
+
                 for (int j = 0; j < 1024; j++){
                     pregunta += ReaderPreg.readChar();
                 }
@@ -175,7 +177,7 @@ public class MiniTrivial {
         } catch (IOException e) {
             e.printStackTrace(); 
         }
-        if(borrado == true) pregunta = "La pregunta esta borrada\n";
+        if(borrado == true) pregunta = "-1";
         return pregunta;
     }
 
@@ -236,5 +238,56 @@ public class MiniTrivial {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public String[] tipoRespuesta(int id){
+        String[] tipoRespuesta = new String[0];
+        int tipo;
+        try {
+            RandomAccessFile ReaderPreg = new RandomAccessFile("Preguntas.dat", "r");
+            RandomAccessFile ReaderResp = new RandomAccessFile("Respuestas.dat", "r");
+
+            ReaderPreg.seek(id * 2061);
+        
+            ReaderPreg.readInt();
+
+            tipo = ReaderPreg.readInt();
+
+            switch(tipo){
+                case 1:
+                tipoRespuesta = new String[1];
+                    tipoRespuesta[0] = "Esta pregunta tiene una sola respuesta";
+                    break;
+                case 2:
+                    tipoRespuesta = new String[3];
+
+                    ReaderResp.seek(id * 2052);
+    
+                    ReaderResp.readInt();
+                    
+                    for(int j = 0; j < 3; j++){
+
+                        for (int k = 0; k < 1024; k++){
+                            char c = ReaderResp.readChar();
+
+                            if(c != '/') tipoRespuesta[j] += c;
+                            else k = 1025;
+                        }                    
+                    }
+
+                    
+                    break;
+                case 3:
+                tipoRespuesta = new String[1];
+                    tipoRespuesta[0] = "Esta pregunta es de si o no!";
+                    break;
+            }
+    
+        ReaderPreg.close();
+        ReaderResp.close();  
+    } catch (IOException e) {
+        e.printStackTrace(); 
+    }
+    return tipoRespuesta;
     }
 }
