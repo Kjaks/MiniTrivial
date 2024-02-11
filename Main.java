@@ -21,6 +21,7 @@ public class Main {
             System.out.println();
 
             switch (eleccion) {
+                // Añadir pregunta
                 case 1:
                     int tipo = 0;
                     String pregunta;
@@ -28,6 +29,7 @@ public class Main {
                     String texto = "";
                     String respuesta = "";
 
+                    // En esta parte se elige el tipo de pregunta
                     System.out.println("\nHay 3 tipos de pregunta:\n 1.Respuesta simple\n 2.Respuesta multiple\n 3.Respuesta si/no\nIngrese el tipo de pregunta:");
                     do {
                         tipo = sc.nextInt();
@@ -35,17 +37,18 @@ public class Main {
                             System.out.println("Escriba un numero del 1 al 3!");
                     } while (tipo < 1 || tipo > 3);
 
+                    // Aqui se puede elegir la categoria de la pregunta
                     System.out.println("\nIngrese la categoría de la pregunta hay 6: ");
                     do {
                         categoria = sc.nextInt();
-                        if (tipo < 1 || tipo > 6)
-                            System.out.println("Escriba un numero del 1 al 6!");
-                    } while (categoria < 1 || categoria > 6);
+                        if (categoria < 1 || categoria > 3)
+                            System.out.println("Escriba un numero del 1 al 3!");
+                    } while (categoria < 1 || categoria > 3);
 
                     sc.nextLine();
 
+                    // Aqui se escribe la pregunta en si
                     do {
-
                         System.out.println("Ingrese la pregunta: ");
                         pregunta = sc.nextLine();
                         if (texto.length() > 1024)
@@ -54,6 +57,7 @@ public class Main {
                     } while (texto.length() > 1024);
                                         
                     switch (tipo) {
+                        // Aqui pondremos las respuestas la respuesta que tenga el astericos "*" sera la correcta
                         case 1:
                             System.out.println("1.Respuesta simple\nIngresa la respuesta: ");
                             do {
@@ -89,20 +93,19 @@ public class Main {
                             break;
                     }
 
+                    // Insertamos la marca de que no esta borrado
                     guardarPregunta(pregunta, tipo, categoria, false, respuesta);
 
                     break;
+                // Ver las preguntas
+
                 case 2:
-                    for (char c : mt.leer().toCharArray()) {
-                        if (c == '*' || c == '_') {
-                            System.out.print(" ");
-                        } else{
-                            System.out.print(c);
-                        
-                        }
-                    }
+                // Aqui se muestran todas las preguntas formateadas.
+                    showTable(mt.leer());
                     break;
+                // Buscar pregunta
                 case 3:
+                    // Conseguims el numero de preguntas que hay
                     int contador = mt.getConteo();
 
                     System.out.println("Ingrese la id de la pregunta que quires buscar (Ingresa un numero del 0 al " + (contador - 1)+ "): ");
@@ -113,30 +116,27 @@ public class Main {
                             System.out.println("Escriba un numero del 1 al " + (contador - 1) + "!");
                     } while (eleccion < 0 || eleccion > (contador - 1));
 
-                    for (char c : mt.buscar(eleccion).toCharArray()) {
-                        if (c == '*' || c == '_') {
-                            System.out.print(" ");
-                        } else{
-                            System.out.print(c);
-                        
-                        }
-                    }
+                    // Una vez elegida sale la pregunta formateada
+                    showTable(mt.buscar(eleccion));
 
                     break;
+                // Modificar pregunta
                 case 4:
                     int id; 
 
-                    System.out.println(mt.leer());
+                    showTable(mt.leer());
                     System.out.println("Elige el id de la pregunta que quieres modificar: ");
 
+                    // Buscamos por id
                     do {
                         id = sc.nextInt();
                         if (id < 0 || id > (mt.getConteo() - 1))
                             System.out.println("Escriba un numero del 0 al " + (mt.getConteo() - 1) + "!");
                     } while (id < 0 || id > (mt.getConteo() - 1));
 
-                    System.out.println(mt.buscar(id));
+                    showTable(mt.buscar(id));
 
+                    // Preguntamos que quiere modificar
                     System.out.println("Que quieres modificar?\n1. Pregunta\n2. Respuesta\n");
                     do {
                         eleccion = sc.nextInt();
@@ -144,8 +144,10 @@ public class Main {
                             System.out.println("Escriba un numero del 1 al 3!");
                     } while (eleccion < 1 || eleccion > 3);
 
+                    // Limpiamos el buffer
                     sc.nextLine();
 
+                    // Modificamos la pregunta o respuesta aqui
                     switch(eleccion){
                         case 1:
                             System.out.println("Ingrese la nueva pregunta: ");
@@ -162,9 +164,10 @@ public class Main {
                     }
 
                     break;
+                // Borrar pregunta
                 case 5: 
 
-                System.out.println(mt.leer());
+                showTable(mt.leer());
                 System.out.println("Elige el id de la pregunta que quieres borrar: ");
 
                 do {
@@ -176,14 +179,17 @@ public class Main {
                 mt.borrar(id);
 
                     break;
+                // Pregunta al azar
                 case 6:
                 String[] respuestaStrings = new String[0];
                 int random;
+                // El limitador sigue una logica para que si no hay preguntas disponibles lance un mensaje de que no hay preguntas
                 int limitador = 0;
                 String preguntaAzar = "";
                 System.out.println("Pregunta al azar!\n");
 
                 do{
+                    // Elegimos un numero random para escoger una pregunta
                     random = (int) (Math.random() * mt.getConteo());
                     limitador++;
 
@@ -193,6 +199,7 @@ public class Main {
 
                 } while(mt.buscar(random).equals("-1") || limitador > mt.getConteo());
 
+                // Si todo sale bien mostramos la pregunta
                 if(random >= 0) {
                     preguntaAzar = mt.buscar(random);
                 
@@ -207,6 +214,7 @@ public class Main {
 
                 System.out.println("\n" + respuestaStrings[0]);
 
+                // Lo que conseguimos aqui es que en las preguntas de respuesta multiple se muestren las respuestas de manera aleatoria
                 if(respuestaStrings.length == 4){
 
                     random = (int) (Math.random() * 3) + 1;
@@ -228,8 +236,10 @@ public class Main {
 
                 } 
 
+                // Limpiado de Buffer
                 sc.nextLine();
 
+                // Introducimos la respuesta y si sale 1 significa que hemos acertado.
                 System.out.println("\nIntroduce tu respuesta!");
                 String respuestaUsuario = sc.nextLine();
                 
@@ -250,10 +260,21 @@ public class Main {
         } while (eleccion != 7);
     }
 
+    // Guardamos la pregunta
     public static void guardarPregunta(String pregunta, int tipo, int categoria, boolean borrado, String respuesta) {
         MiniTrivial mt = new MiniTrivial();
 
         mt.guardar(pregunta, tipo, categoria, borrado, respuesta);
     }
 
+    public static void showTable(String tabla){
+        // Formateamos la tabla para que no contenga los caracteres "*" o "_"
+        for (char c : tabla.toCharArray()) {
+            if (c == '*' || c == '_') {
+                System.out.print(" ");
+            } else{
+                System.out.print(c);                    
+            }
+        }
+    }
 }
