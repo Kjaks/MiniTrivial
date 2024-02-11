@@ -256,11 +256,13 @@ public class MiniTrivial {
 
                     tipoRespuesta[0] = "Esta pregunta tiene una sola respuesta";
                     for (int k = 0; k < 1024; k++){
-                        char c = ReaderResp.readChar();
+                        char c = (char) ReaderResp.readByte(); // Leer byte en lugar de char
+                        if (c != '_') {
+                            if(c != '\u0000') tipoRespuesta[1] += c;
 
-                        if(c != '\u0000') tipoRespuesta[k] += c;
-
-                    }         
+                        }
+                        else k = 1025;
+                        }   
                     break;
                 case 2:
                     tipoRespuesta = new String[4];
@@ -289,11 +291,14 @@ public class MiniTrivial {
 
                     tipoRespuesta[0] = "Esta pregunta es de si o no!";
                     for (int k = 0; k < 1024; k++){
-                        char c = ReaderResp.readChar();
+                        char c = (char) ReaderResp.readByte(); // Leer byte en lugar de char
+                        if (c != '_') {
+                            if(c != '\u0000') tipoRespuesta[1] += c;
 
-                        if(c != '\u0000') tipoRespuesta[k] += c;
-
-                    }         
+                        }
+                        else k = 1025;
+                        }
+                             
                     break;
             }
     

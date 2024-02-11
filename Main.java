@@ -57,7 +57,7 @@ public class Main {
                         case 1:
                             System.out.println("1.Respuesta simple\nIngresa la respuesta: ");
                             do {
-                                respuesta = sc.nextLine() + "*";
+                                respuesta = sc.nextLine() + "*_";
                                 if (respuesta.length() > 1024)
                                     System.out.println("La respuesta no puede tener más de 1024 caracteres!");
                             } while (respuesta.length() > 1024);
@@ -81,7 +81,7 @@ public class Main {
                         case 3:
                             System.out.println("Ingrese la respuesta correcta: ");
                             do {
-                                respuesta = sc.nextLine() + "*";
+                                respuesta = sc.nextLine() + "*_";
                                 if (!respuesta.equals("si") && !respuesta.equals("no"))
                                     System.out.println("La respuesta debe ser si o no!");
                             } while (!respuesta.equals("si") && !respuesta.equals("no"));                            
@@ -93,7 +93,14 @@ public class Main {
 
                     break;
                 case 2:
-                    System.out.println(mt.leer());
+                    for (char c : mt.leer().toCharArray()) {
+                        if (c == '*' || c == '_') {
+                            System.out.print(" ");
+                        } else{
+                            System.out.print(c);
+                        
+                        }
+                    }
                     break;
                 case 3:
                     int contador = mt.getConteo();
@@ -106,7 +113,14 @@ public class Main {
                             System.out.println("Escriba un numero del 1 al " + (contador - 1) + "!");
                     } while (eleccion < 0 || eleccion > (contador - 1));
 
-                    System.out.println(mt.buscar(eleccion));
+                    for (char c : mt.buscar(eleccion).toCharArray()) {
+                        if (c == '*' || c == '_') {
+                            System.out.print(" ");
+                        } else{
+                            System.out.print(c);
+                        
+                        }
+                    }
 
                     break;
                 case 4:
