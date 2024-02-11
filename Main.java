@@ -102,9 +102,9 @@ public class Main {
                     
                     do {
                         eleccion = sc.nextInt();
-                        if (eleccion < 1 || eleccion > (contador - 1))
+                        if (eleccion < 0 || eleccion > (contador - 1))
                             System.out.println("Escriba un numero del 1 al " + (contador - 1) + "!");
-                    } while (eleccion < 1 || eleccion > (contador - 1));
+                    } while (eleccion < 0 || eleccion > (contador - 1));
 
                     System.out.println(mt.buscar(eleccion));
 
@@ -175,22 +175,37 @@ public class Main {
 
                     if(limitador > mt.getConteo()){ 
                     System.out.println("No hay preguntas disponibles!");
-                    random = -1;
                     }
 
                 } while(mt.buscar(random).equals("-1") || limitador > mt.getConteo());
 
-                preguntaAzar = mt.buscar(random);
-                for(int i = 0,j = 0; i < preguntaAzar.length(); i++){
-                    if(preguntaAzar.charAt(i) == '\n') j++;
-                    if(j == 3) break;
-                    System.out.print(preguntaAzar.charAt(i));
-                }
+                if(random >= 0) {preguntaAzar = mt.buscar(random);
+                
+                    for(int i = 0,j = 0; i < preguntaAzar.length(); i++){
+                        if(preguntaAzar.charAt(i) == '\n') j++;
+                        System.out.print(preguntaAzar.charAt(i));
+                        if(j == 3) i = preguntaAzar.length() + 1;
+                    }
 
-                if(random != -1) respuestaStrings = mt.tipoRespuesta(random);
+                    respuestaStrings = mt.tipoRespuesta(random);
+                }
 
                 System.out.println("\n" + respuestaStrings[0]);
 
+                if(respuestaStrings.length == 4){
+                    String conjuntoRespuestas = "";
+
+                    random = (int) (Math.random() * 3) + 1;
+
+                    conjuntoRespuestas += respuestaStrings[random] + " ";
+
+                    for(int i = 1; i < 4;i++){
+                        if(i != random) conjuntoRespuestas += respuestaStrings[i] + " ";
+                    }
+                    System.out.println(conjuntoRespuestas);
+                } 
+
+                    
                     break;
                 case 7:
                     System.out.println("¡Adios!");

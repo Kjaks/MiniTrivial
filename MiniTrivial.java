@@ -4,6 +4,7 @@ import java.io.RandomAccessFile;
 
 public class MiniTrivial {
     private int contador;
+    String[] tipoRespuesta = new String[0];
 
      public void guardar(String pregunta, int tipo, int categoria, boolean borrado, String respuesta){
         conteo();
@@ -146,12 +147,8 @@ public class MiniTrivial {
         
                 ReaderPreg.readInt();
 
-                ReaderPreg.readInt();
-
                 pregunta += "pregunta: ";
         
-                ReaderPreg.seek(id * 2061);
-
                 for (int j = 0; j < 1024; j++){
                     pregunta += ReaderPreg.readChar();
                 }
@@ -178,6 +175,7 @@ public class MiniTrivial {
             e.printStackTrace(); 
         }
         if(borrado == true) pregunta = "-1";
+
         return pregunta;
     }
 
@@ -241,7 +239,6 @@ public class MiniTrivial {
     }
 
     public String[] tipoRespuesta(int id){
-        String[] tipoRespuesta = new String[0];
         int tipo;
         try {
             RandomAccessFile ReaderPreg = new RandomAccessFile("Preguntas.dat", "r");
@@ -255,17 +252,25 @@ public class MiniTrivial {
 
             switch(tipo){
                 case 1:
-                tipoRespuesta = new String[1];
+                tipoRespuesta = new String[2];
+
                     tipoRespuesta[0] = "Esta pregunta tiene una sola respuesta";
+                    for (int k = 0; k < 1024; k++){
+                        char c = ReaderResp.readChar();
+
+                        tipoRespuesta[1] += c;
+
+                    }         
                     break;
                 case 2:
-                    tipoRespuesta = new String[3];
+                    tipoRespuesta = new String[4];
 
+                    tipoRespuesta[0] = "Esta pregunta tiene 3 posibles respuestas";
                     ReaderResp.seek(id * 2052);
     
                     ReaderResp.readInt();
                     
-                    for(int j = 0; j < 3; j++){
+                    for(int j = 1; j < 4; j++){
 
                         for (int k = 0; k < 1024; k++){
                             char c = ReaderResp.readChar();
@@ -278,8 +283,15 @@ public class MiniTrivial {
                     
                     break;
                 case 3:
-                tipoRespuesta = new String[1];
+                tipoRespuesta = new String[2];
+
                     tipoRespuesta[0] = "Esta pregunta es de si o no!";
+                    for (int k = 0; k < 1024; k++){
+                        char c = ReaderResp.readChar();
+
+                        tipoRespuesta[1] += c;
+
+                    }         
                     break;
             }
     
@@ -289,5 +301,10 @@ public class MiniTrivial {
         e.printStackTrace(); 
     }
     return tipoRespuesta;
+    }
+
+    public int preguntaCorrecta(String respuesta){
+        if(tipoRespuesta[1].toLowerCase().equals(respuesta.toLowerCase())) return 1;
+        else return 0; 
     }
 }
