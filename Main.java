@@ -38,7 +38,7 @@ public class Main {
                     } while (tipo < 1 || tipo > 3);
 
                     // Aqui se puede elegir la categoria de la pregunta
-                    System.out.println("\nIngrese la categoría de la pregunta hay 6: ");
+                    System.out.println("\nIngrese la categoría de la pregunta hay 3: ");
                     do {
                         categoria = sc.nextInt();
                         if (categoria < 1 || categoria > 3)
@@ -97,15 +97,16 @@ public class Main {
                     guardarPregunta(pregunta, tipo, categoria, false, respuesta);
 
                     break;
-                // Ver las preguntas
 
+                // Ver las preguntas
                 case 2:
                 // Aqui se muestran todas las preguntas formateadas.
                     showTable(mt.leer());
                     break;
+
                 // Buscar pregunta
                 case 3:
-                    // Conseguims el numero de preguntas que hay
+                // Conseguims el numero de preguntas que hay
                     int contador = mt.getConteo();
 
                     System.out.println("Ingrese la id de la pregunta que quires buscar (Ingresa un numero del 0 al " + (contador - 1)+ "): ");
@@ -120,6 +121,7 @@ public class Main {
                     showTable(mt.buscar(eleccion));
 
                     break;
+
                 // Modificar pregunta
                 case 4:
                     int id; 
@@ -164,9 +166,9 @@ public class Main {
                     }
 
                     break;
+
                 // Borrar pregunta
                 case 5: 
-
                 showTable(mt.leer());
                 System.out.println("Elige el id de la pregunta que quieres borrar: ");
 
@@ -177,8 +179,8 @@ public class Main {
                 } while (id < 0 || id > (mt.getConteo() - 1));
 
                 mt.borrar(id);
-
-                    break;
+                break;
+                
                 // Pregunta al azar
                 case 6:
                 String[] respuestaStrings = new String[0];
@@ -233,7 +235,6 @@ public class Main {
                             System.out.print(" ");
                         } 
                     }
-
                 } 
 
                 // Limpiado de Buffer
@@ -247,9 +248,10 @@ public class Main {
 
                 if(resultado == 1) System.out.println("Respuesta correcta!");
                 else System.out.println("Respuesta incorrecta!");
-
                     
-                    break;
+                break;
+
+                // Salir del programa
                 case 7:
                     System.out.println("¡Adios!");
                     break;
