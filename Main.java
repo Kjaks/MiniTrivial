@@ -101,7 +101,8 @@ public class Main {
                 // Ver las preguntas
                 case 2:
                 // Aqui se muestran todas las preguntas formateadas.
-                    showTable(mt.leer());
+                    showTable(mt.leer());   
+                    mt.preguntasCategoria(3);
                     break;
 
                 // Buscar pregunta

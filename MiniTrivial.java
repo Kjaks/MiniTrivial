@@ -3,8 +3,8 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 
 public class MiniTrivial {
-    // Saber cuantas preguntas tenemos disponible
-    private int contador;
+    // Saber cuantas preguntas tenemos disponibles
+    private int contador = 0;
     // Esto es una variable de la clase ya que la manejamos con dos metodos
     // sirve para saber cuantas respuestas tiene una pregunta
     private String[] tipoRespuesta = new String[0];
@@ -333,5 +333,46 @@ public class MiniTrivial {
         // respuesta a la pregunta a minusculas y comprobamos. 
         if(tipoRespuesta[1].toLowerCase().equals("null" + respuesta.toLowerCase() + "*")) return 1;
         else return 0; 
+    }
+
+    // Este metodo se encarga de devolver un array con las preguntas que pertenecen a una categoria
+    public int[] preguntasCategoria(int categoria){
+        int[] preguntasCategoria = new int[contador];
+
+        // Llenaremos el array con -1, que significa que en esa posicion no hay preguntas de esa categoria
+        for(int i = 0; i < preguntasCategoria.length; i++){
+            preguntasCategoria[i] = -1;
+        }
+        // La unica forma en la que se puede saber cuantas preguntas hay de una categoria es recorriendo el archivo entero
+        // en el array apuntaremos la posicion de la pregunta que pertenece a la categoria designada por el usuario
+        try{
+            RandomAccessFile ReaderPreg = new RandomAccessFile("Preguntas.dat", "r");
+
+            for(int i = 0, j = 0; i < preguntasCategoria.length; i++){
+            int id_categoria;
+            int id;
+
+            ReaderPreg.seek(i * 2061);
+        
+            id = ReaderPreg.readInt();
+
+            ReaderPreg.readInt();
+
+            id_categoria = ReaderPreg.readInt();
+
+            // Apuntaremos el id de las preguntas de la categoria designada
+            if (id_categoria == categoria) {
+                preguntasCategoria[j] = id;
+                j++;
+            }
+        }
+
+        ReaderPreg.close();
+        
+        } catch (Exception e) {
+            System.err.println("Error al leer el archivo"); 
+        }
+
+        return preguntasCategoria;
     }
 }
