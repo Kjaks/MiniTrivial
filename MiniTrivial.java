@@ -119,8 +119,8 @@ public class MiniTrivial {
             }
             ReaderPreg.close();
             ReaderResp.close();  
-        } catch (IOException e) {
-            e.printStackTrace(); 
+        } catch (Exception e) {
+            System.err.println("Error al leer el archivo");
         }
         return pregunta;
     }
@@ -134,8 +134,8 @@ public class MiniTrivial {
     if (archivo.exists()) {
         try (RandomAccessFile ReaderPreg = new RandomAccessFile(archivo, "r")) {
             conteo = (int) (ReaderPreg.length() / 2061);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            System.err.print("");
         }
     } else conteo = 0;
 
@@ -200,6 +200,7 @@ public class MiniTrivial {
     public void modificarPregunta(int id,int tipoCambio,String cambioString){
         // El stringbuffer para formatear el String
         StringBuffer cambioStringFormateado = new StringBuffer(cambioString);
+        cambioStringFormateado.append("*_");
         cambioStringFormateado.setLength(1024);
         
         // Simplemente busca el registro exacto y se sobreescribe, el tipo de cambio sirve para saber si cambiar la respuesta o la pregunta
@@ -229,8 +230,8 @@ public class MiniTrivial {
                     WriterResp.close();
             }
             
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            System.err.println("Error al leer el archivo"); 
         }
     }
 
@@ -248,8 +249,8 @@ public class MiniTrivial {
                 WriterPreg.writeBoolean(true);
                 WriterPreg.close();
 
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            System.err.println("Error al leer el archivo"); 
         }
     }
 
@@ -322,8 +323,8 @@ public class MiniTrivial {
     
         ReaderPreg.close();
         ReaderResp.close();  
-    } catch (IOException e) {
-        e.printStackTrace(); 
+    } catch (Exception e) {
+        System.err.println("Error al leer el archivo"); 
     }
     return tipoRespuesta;
     }
@@ -337,6 +338,7 @@ public class MiniTrivial {
 
     // Este metodo se encarga de devolver un array con las preguntas que pertenecen a una categoria
     public int[] preguntasCategoria(int categoria){
+        conteo();
         int[] preguntasCategoria = new int[contador];
 
         // Llenaremos el array con -1, que significa que en esa posicion no hay preguntas de esa categoria

@@ -38,7 +38,7 @@ public class Main {
                     } while (tipo < 1 || tipo > 3);
 
                     // Aqui se puede elegir la categoria de la pregunta
-                    System.out.println("\nIngrese la categoría de la pregunta hay 3: ");
+                    System.out.println("De que categoria es la pregunta:\n1. Deportes\n2. Ciencia\n3. Historia");
                     do {
                         categoria = sc.nextInt();
                         if (categoria < 1 || categoria > 3)
@@ -86,9 +86,9 @@ public class Main {
                             System.out.println("Ingrese la respuesta correcta: ");
                             do {
                                 respuesta = sc.nextLine() + "*_";
-                                if (!respuesta.equals("si") && !respuesta.equals("no"))
+                                if (!respuesta.equals("si*_") && !respuesta.equals("no*_"))
                                     System.out.println("La respuesta debe ser si o no!");
-                            } while (!respuesta.equals("si") && !respuesta.equals("no"));                            
+                            } while (!respuesta.equals("si*_") && !respuesta.equals("no*_"));                            
 
                             break;
                     }
@@ -102,7 +102,6 @@ public class Main {
                 case 2:
                 // Aqui se muestran todas las preguntas formateadas.
                     showTable(mt.leer());   
-                    mt.preguntasCategoria(3);
                     break;
 
                 // Buscar pregunta
@@ -110,17 +109,19 @@ public class Main {
                 // Conseguims el numero de preguntas que hay
                     int contador = mt.getConteo();
 
-                    System.out.println("Ingrese la id de la pregunta que quires buscar (Ingresa un numero del 0 al " + (contador - 1)+ "): ");
-                    
-                    do {
-                        eleccion = sc.nextInt();
-                        if (eleccion < 0 || eleccion > (contador - 1))
-                            System.out.println("Escriba un numero del 1 al " + (contador - 1) + "!");
-                    } while (eleccion < 0 || eleccion > (contador - 1));
+                    if(contador == 0) System.out.println("No hay preguntas disponibles!");
+                    else{
+                        System.out.println("Ingrese la id de la pregunta que quires buscar (Ingresa un numero del 0 al " + (contador - 1)+ "): ");
+                        
+                        do {
+                            eleccion = sc.nextInt();
+                            if (eleccion < 0 || eleccion > (contador - 1))
+                                System.out.println("Escriba un numero del 1 al " + (contador - 1) + "!");
+                        } while (eleccion < 0 || eleccion > (contador - 1));
 
-                    // Una vez elegida sale la pregunta formateada
-                    showTable(mt.buscar(eleccion));
-
+                        // Una vez elegida sale la pregunta formateada
+                        showTable(mt.buscar(eleccion));
+                    }
                     break;
 
                 // Modificar pregunta
@@ -128,42 +129,47 @@ public class Main {
                     int id; 
 
                     showTable(mt.leer());
-                    System.out.println("Elige el id de la pregunta que quieres modificar: ");
 
-                    // Buscamos por id
-                    do {
-                        id = sc.nextInt();
-                        if (id < 0 || id > (mt.getConteo() - 1))
-                            System.out.println("Escriba un numero del 0 al " + (mt.getConteo() - 1) + "!");
-                    } while (id < 0 || id > (mt.getConteo() - 1));
+                    if(mt.getConteo() > 0){
+                        System.out.println("Elige el id de la pregunta que quieres modificar: ");
 
-                    showTable(mt.buscar(id));
+                        // Buscamos por id
+                        do {
+                            id = sc.nextInt();
+                            if (id < 0 || id > (mt.getConteo() - 1))
+                                System.out.println("Escriba un numero del 0 al " + (mt.getConteo() - 1) + "!");
+                        } while (id < 0 || id > (mt.getConteo() - 1));
 
-                    // Preguntamos que quiere modificar
-                    System.out.println("Que quieres modificar?\n1. Pregunta\n2. Respuesta\n");
-                    do {
-                        eleccion = sc.nextInt();
-                        if (eleccion < 1 || eleccion > 3)
-                            System.out.println("Escriba un numero del 1 al 3!");
-                    } while (eleccion < 1 || eleccion > 3);
+                        showTable(mt.buscar(id));
 
-                    // Limpiamos el buffer
-                    sc.nextLine();
+                        // Preguntamos que quiere modificar
+                        System.out.println("Que quieres modificar?\n1. Pregunta\n2. Respuesta\n");
+                        do {
+                            eleccion = sc.nextInt();
+                            if (eleccion < 1 || eleccion > 3)
+                                System.out.println("Escriba un numero del 1 al 3!");
+                        } while (eleccion < 1 || eleccion > 3);
 
-                    // Modificamos la pregunta o respuesta aqui
-                    switch(eleccion){
-                        case 1:
-                            System.out.println("Ingrese la nueva pregunta: ");
-                            pregunta = sc.nextLine();
-                            mt.modificarPregunta(id, eleccion, pregunta);
-                            break;
+                        // Limpiamos el buffer
+                        sc.nextLine();
 
-                        case 2:
-                            System.out.println("Ingrese la nueva respuesta: ");
-                            respuesta = sc.nextLine();
-                            mt.modificarPregunta(id, eleccion, respuesta);
-                            break;
+                        // Modificamos la pregunta o respuesta aqui
+                        switch(eleccion){
+                            case 1:
+                                System.out.println("Ingrese la nueva pregunta: ");
+                                pregunta = sc.nextLine();
+                                mt.modificarPregunta(id, eleccion, pregunta);
+                                break;
 
+                            case 2:
+                                System.out.println("Ingrese la nueva respuesta: ");
+                                respuesta = sc.nextLine();
+                                mt.modificarPregunta(id, eleccion, respuesta);
+                                break;
+                        }
+                    } 
+                    else {
+                        System.out.print("");
                     }
 
                     break;
@@ -171,85 +177,126 @@ public class Main {
                 // Borrar pregunta
                 case 5: 
                 showTable(mt.leer());
-                System.out.println("Elige el id de la pregunta que quieres borrar: ");
 
-                do {
-                    id = sc.nextInt();
-                    if (id < 0 || id > (mt.getConteo() - 1))
-                        System.out.println("Escriba un numero del 0 al " + (mt.getConteo() - 1) + "!");
-                } while (id < 0 || id > (mt.getConteo() - 1));
+                if(mt.getConteo() > 0){
+                    System.out.println("Elige el id de la pregunta que quieres borrar: ");
 
-                mt.borrar(id);
+                    do {
+                        id = sc.nextInt();
+                        if (id < 0 || id > (mt.getConteo() - 1))
+                            System.out.println("Escriba un numero del 0 al " + (mt.getConteo() - 1) + "!");
+                    } while (id < 0 || id > (mt.getConteo() - 1));
+
+                    mt.borrar(id);
+                }
                 break;
                 
                 // Pregunta al azar
                 case 6:
                 String[] respuestaStrings = new String[0];
                 int random;
-                // El limitador sigue una logica para que si no hay preguntas disponibles lance un mensaje de que no hay preguntas
-                int limitador = 0;
+                int eleccionCategoria = 0;
+                int contadorPreguntasCategoria = 0;
                 String preguntaAzar = "";
-                System.out.println("Pregunta al azar!\n");
 
-                do{
-                    // Elegimos un numero random para escoger una pregunta
-                    random = (int) (Math.random() * mt.getConteo());
-                    limitador++;
-
-                    if(limitador > mt.getConteo()){ 
-                    System.out.println("No hay preguntas disponibles!");
-                    }
-
-                } while(mt.buscar(random).equals("-1") || limitador > mt.getConteo());
-
-                // Si todo sale bien mostramos la pregunta
-                if(random >= 0) {
-                    preguntaAzar = mt.buscar(random);
-                
-                    for(int i = 0,j = 0; i < preguntaAzar.length(); i++){
-                        if(preguntaAzar.charAt(i) == '\n') j++;
-                        System.out.print(preguntaAzar.charAt(i));
-                        if(j == 3) i = preguntaAzar.length() + 1;
-                    }
-
-                    respuestaStrings = mt.tipoRespuesta(random);
-                }
-
-                System.out.println("\n" + respuestaStrings[0]);
-
-                // Lo que conseguimos aqui es que en las preguntas de respuesta multiple se muestren las respuestas de manera aleatoria
-                if(respuestaStrings.length == 4){
-
-                    random = (int) (Math.random() * 3) + 1;
-
-                    for(int i = 4; i < respuestaStrings[random].length(); i++){
-                        if(respuestaStrings[random].charAt(i) != '*') System.out.print(respuestaStrings[random].charAt(i));
-                    }
-
-                    System.out.print(" ");
-
-                    for(int i = 1; i < 4;i++){
-                        if(i != random){
-                            for(int j = 4; j < respuestaStrings[i].length(); j++){
-                                if(respuestaStrings[i].charAt(j) != '*') System.out.print(respuestaStrings[i].charAt(j));
-                            }
-                            System.out.print(" ");
-                        } 
-                    }
-                } 
-
-                // Limpiado de Buffer
-                sc.nextLine();
-
-                // Introducimos la respuesta y si sale 1 significa que hemos acertado.
-                System.out.println("\nIntroduce tu respuesta!");
-                String respuestaUsuario = sc.nextLine();
-                
-                int resultado = mt.preguntaCorrecta(respuestaUsuario);
-
-                if(resultado == 1) System.out.println("Respuesta correcta!");
-                else System.out.println("Respuesta incorrecta!");
+                if(mt.getConteo() > 0){
+                    System.out.println("Pregunta al azar!\n");
+                    System.out.println("Elige una categoria:\n1. Deportes\n2. Ciencia\n3. Historia");
                     
+                    do {
+                        eleccionCategoria = sc.nextInt();
+                        if (eleccionCategoria < 1 || eleccionCategoria > 3) System.out.println("Escriba un numero del 1 al 3!");
+                    } while (eleccionCategoria < 1 || eleccionCategoria > 3);
+
+                    // Insertaremos el array de preguntas que sean de la categoria elegida
+                    int[] preguntasCategoria = mt.preguntasCategoria(eleccionCategoria);
+
+                    // Si no hay preguntas disponibles
+                    if(existePregunta(preguntasCategoria) == false) System.out.println("No hay preguntas disponibles!");
+
+                    if(existePregunta(preguntasCategoria)){
+                        // Para que no haya problemas para elegir la pregunta al azar haremos un nuevo array donde guardaremos las preguntas
+                        // que sean de esa categoria, ya que tambien se meteran preguntas que no sean de esa categoria al array que nos da
+                        // preguntasCategoria()
+                        for(int i = 0; i < preguntasCategoria.length; i++){
+                            if (preguntasCategoria[i] != -1) contadorPreguntasCategoria++;
+                            else i = preguntasCategoria.length + 1;
+                        }
+                        // Quitaremos los valores que no son validos del array de arriba
+                        // valores no validos son los que estan borrados o no son de la categoria
+                        int[] preguntasCategoriaRandom = new int[contadorPreguntasCategoria];
+
+                        for(int i = 0; i < contadorPreguntasCategoria; i++){
+                            preguntasCategoriaRandom[i] = preguntasCategoria[i];
+                        }
+
+                        do{
+                            // Elegimos un numero random para escoger una pregunta
+                            random = (int) (Math.random() * contadorPreguntasCategoria);
+
+                            // Si el numero elegido esta borrado se le pone un -1
+                            if(mt.buscar(preguntasCategoriaRandom[random]).equals("-1")){
+                                preguntasCategoriaRandom[random] = -1;
+                            }
+
+                            // Si sale falso significa que no hay preguntas disponibles
+                            if(existePregunta(preguntasCategoriaRandom) == false) System.out.println("No hay preguntas disponibles!");
+
+                        } while(mt.buscar(preguntasCategoriaRandom[random]).equals("-1") || preguntasCategoriaRandom[random] == -1 || existePregunta(preguntasCategoria) == false);
+
+                        // Si todo sale bien mostramos la pregunta
+                        if(random >= 0) {
+                            preguntaAzar = mt.buscar(preguntasCategoriaRandom[random]);
+                        
+                            for(int i = 0,j = 0; i < preguntaAzar.length(); i++){
+                                if(preguntaAzar.charAt(i) == '\n') j++;
+                                System.out.print(preguntaAzar.charAt(i));
+                                if(j == 3) i = preguntaAzar.length() + 1;
+                            }
+
+                            respuestaStrings = mt.tipoRespuesta(preguntasCategoriaRandom[random]);
+                        }
+
+                        System.out.println("\n" + respuestaStrings[0]);
+
+                        // Lo que conseguimos aqui es que en las preguntas de respuesta multiple se muestren las respuestas 
+                        // por pantalla de manera aleatoria
+                        if(respuestaStrings.length == 4){
+
+                            random = (int) (Math.random() * 3) + 1;
+
+                            for(int i = 4; i < respuestaStrings[preguntasCategoriaRandom[random]].length(); i++){
+                                if(respuestaStrings[preguntasCategoriaRandom[random]].charAt(i) != '*') System.out.print(respuestaStrings[preguntasCategoriaRandom[random]].charAt(i));
+                            }
+
+                            System.out.print(" ");
+
+                            for(int i = 1; i < 4;i++){
+                                if(i != random){
+                                    for(int j = 4; j < respuestaStrings[i].length(); j++){
+                                        if(respuestaStrings[i].charAt(j) != '*') System.out.print(respuestaStrings[i].charAt(j));
+                                    }
+                                    System.out.print(" ");
+                                } 
+                            }
+                        } 
+
+                        // Limpiado de Buffer
+                        sc.nextLine();
+
+                        // Introducimos la respuesta y si sale 1 significa que hemos acertado.
+                        System.out.println("\nIntroduce tu respuesta!");
+                        String respuestaUsuario = sc.nextLine();
+                        
+                        int resultado = mt.preguntaCorrecta(respuestaUsuario);
+
+                        if(resultado == 1) System.out.println("Respuesta correcta!");
+                        else System.out.println("Respuesta incorrecta!");
+        
+                    }
+                } else {
+                    System.out.println("No hay preguntas disponibles!");
+                }
                 break;
 
                 // Salir del programa
@@ -279,5 +326,18 @@ public class Main {
                 System.out.print(c);                    
             }
         }
+    }
+
+    // Este metodo sirve para comprobar si en el array existen preguntas disponibles
+    public static boolean existePregunta(int[] preguntas){
+        boolean seguir = true;
+
+        for(int i = 0,j = 0; i < preguntas.length; i++){
+            if(preguntas[i] == -1) j++;
+            if(j == preguntas.length) {
+                seguir = false;
+            }
+        }
+        return seguir;
     }
 }
