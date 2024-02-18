@@ -186,7 +186,7 @@ public class MiniTrivial {
             ReaderPreg.close();
             ReaderResp.close();  
         } catch (IOException e) {
-            e.printStackTrace(); 
+            System.err.println("Error al leer el archivo"); 
         }
         if(borrado == true) pregunta = "-1";
 
@@ -260,7 +260,7 @@ public class MiniTrivial {
 
     // Se busca en el registro que tipo de pregunta es y devolvemos un array de Strings dependiendo de si la respuesta es multiple o no
     public String[] tipoRespuesta(int id){
-        int tipo;
+        int tipo = 0;
         try {
             RandomAccessFile ReaderPreg = new RandomAccessFile("Preguntas.dat", "r");
             RandomAccessFile ReaderResp = new RandomAccessFile("Respuestas.dat", "r");
@@ -278,6 +278,11 @@ public class MiniTrivial {
                 tipoRespuesta = new String[2];
 
                     tipoRespuesta[0] = "Esta pregunta tiene una sola respuesta";
+
+                    ReaderResp.seek(id * 2052);
+                    
+                    ReaderResp.readInt();
+
                     for (int k = 0; k < 1024; k++){
                         char c = (char) ReaderResp.readByte();
                         // El caracter "_" es de separacion
@@ -293,9 +298,9 @@ public class MiniTrivial {
 
                     tipoRespuesta[0] = "Esta pregunta tiene 3 posibles respuestas";
                     ReaderResp.seek(id * 2052);
-    
-                    ReaderResp.readInt();
                     
+                    ReaderResp.readInt();
+
                     for(int j = 1; j < 4; j++){
 
                         for (int k = 0; k < 1024; k++){
@@ -313,6 +318,11 @@ public class MiniTrivial {
                 tipoRespuesta = new String[2];
 
                     tipoRespuesta[0] = "Esta pregunta es de si o no!";
+
+                    ReaderResp.seek(id * 2052);
+                    
+                    ReaderResp.readInt();
+
                     for (int k = 0; k < 1024; k++){
                         char c = (char) ReaderResp.readByte(); // Leer byte en lugar de char
                         if (c != '_') {

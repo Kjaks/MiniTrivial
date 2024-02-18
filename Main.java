@@ -120,14 +120,14 @@ public class Main {
                         } while (eleccion < 0 || eleccion > (contador - 1));
 
                         // Una vez elegida sale la pregunta formateada
-                        showTable(mt.buscar(eleccion));
+                        if (mt.buscar(eleccion).equals("-1")) System.out.println("Esta pregunta esta borrada!");
+                        else showTable(mt.buscar(eleccion));
                     }
                     break;
 
                 // Modificar pregunta
                 case 4:
                     int id; 
-
                     showTable(mt.leer());
 
                     if(mt.getConteo() > 0){
@@ -140,7 +140,9 @@ public class Main {
                                 System.out.println("Escriba un numero del 0 al " + (mt.getConteo() - 1) + "!");
                         } while (id < 0 || id > (mt.getConteo() - 1));
 
-                        showTable(mt.buscar(id));
+                        if (mt.buscar(id).equals("-1")) System.out.println("Esta pregunta esta borrada!");
+                        else {
+                            showTable(mt.buscar(id));
 
                         // Preguntamos que quiere modificar
                         System.out.println("Que quieres modificar?\n1. Pregunta\n2. Respuesta\n");
@@ -167,6 +169,7 @@ public class Main {
                                 mt.modificarPregunta(id, eleccion, respuesta);
                                 break;
                         }
+                    }
                     } 
                     else {
                         System.out.print("");
