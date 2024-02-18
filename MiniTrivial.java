@@ -9,6 +9,7 @@ public class MiniTrivial {
     // sirve para saber cuantas respuestas tiene una pregunta
     private String[] tipoRespuesta = new String[0];
 
+    // Este metodo se encarga de guardar las preguntas en el archivo
      public void guardar(String pregunta, int tipo, int categoria, boolean borrado, String respuesta){
         // Este metodo actualiza el contador
         conteo();
@@ -51,10 +52,11 @@ public class MiniTrivial {
             contador++;
         }
         catch(Exception e){
-            e.printStackTrace();
+            System.err.println("Error al escribir el archivo");
         }
     }
 
+    // Este metodo lee los registros y nos los muestra.
     public String leer(){
         conteo();
         String pregunta = "";
@@ -125,9 +127,9 @@ public class MiniTrivial {
         return pregunta;
     }
 
-    public void conteo() {
     // Comprobaremos si el archivo existe y dividiremos su longitud entre el tamaño de cada registro para saber cuantos registros hay
     // si el archivo no existe dara 0
+    public void conteo() {
     int conteo = 0;
     File archivo = new File("Preguntas.dat");
 
@@ -143,10 +145,10 @@ public class MiniTrivial {
     
     }
 
+    // Hace lo mismo que el metodo leer pero solo mostrara la pregunta que se busca y si esta borrado no se muestra
     public String buscar(int id){
         String pregunta = "";
         boolean borrado = false;
-        // Lo mismo que el metodo leer pero solo mostrara la pregunta que se busca y si esta borrado no se muestra
         try {
                 RandomAccessFile ReaderPreg = new RandomAccessFile("Preguntas.dat", "r");
                 RandomAccessFile ReaderResp = new RandomAccessFile("Respuestas.dat", "r");
@@ -191,12 +193,14 @@ public class MiniTrivial {
         return pregunta;
     }
 
+    // Nos devuelve el contador para saber cuantas preguntas hay
     public int getConteo(){
         // Con este metodo conseguimos actualizar el contador
         conteo();
         return contador;
     }
 
+    // Este metodo se encarga de modificar la pregunta o la respuesta
     public void modificarPregunta(int id,int tipoCambio,String cambioString){
         // El stringbuffer para formatear el String
         StringBuffer cambioStringFormateado = new StringBuffer(cambioString);
@@ -235,8 +239,8 @@ public class MiniTrivial {
         }
     }
 
+    // Simplemente busca el registro exacto y cambia el boolean a true
     public void borrar(int id){
-        // Simplemente busca el registro exacto y cambia el boolean a true
         try{
             RandomAccessFile WriterPreg = new RandomAccessFile("Preguntas.dat","rw");
                 WriterPreg.seek(id * 2061);
@@ -254,9 +258,9 @@ public class MiniTrivial {
         }
     }
 
+    // Se busca en el registro que tipo de pregunta es y devolvemos un array de Strings dependiendo de si la respuesta es multiple o no
     public String[] tipoRespuesta(int id){
         int tipo;
-        // Se busca en el registro que tipo de pregunta es y devolvemos un array de Strings dependiendo de si la respuesta es multiple o no
         try {
             RandomAccessFile ReaderPreg = new RandomAccessFile("Preguntas.dat", "r");
             RandomAccessFile ReaderResp = new RandomAccessFile("Respuestas.dat", "r");
@@ -329,9 +333,9 @@ public class MiniTrivial {
     return tipoRespuesta;
     }
 
+    // Este metodo se encarga de comprobar si la respuesta es correcta o no. Convertimos la respuesta del usuario y la 
+    // respuesta a la pregunta a minusculas y comprobamos. 
     public int preguntaCorrecta(String respuesta){
-        // Este metodo se encarga de comprobar si la respuesta es correcta o no. Convertimos la respuesta del usuario y la 
-        // respuesta a la pregunta a minusculas y comprobamos. 
         if(tipoRespuesta[1].toLowerCase().equals("null" + respuesta.toLowerCase() + "*")) return 1;
         else return 0; 
     }

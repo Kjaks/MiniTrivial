@@ -57,7 +57,7 @@ public class Main {
                     } while (texto.length() > 1024);
                                         
                     switch (tipo) {
-                        // Aqui pondremos las respuestas la respuesta que tenga el astericos "*" sera la correcta
+                        // Aqui pondremos las respuestas la respuesta que tenga el asterico "*" sera la correcta
                         case 1:
                             System.out.println("1.Respuesta simple\nIngresa la respuesta: ");
                             do {
@@ -248,6 +248,7 @@ public class Main {
                         if(random >= 0) {
                             preguntaAzar = mt.buscar(preguntasCategoriaRandom[random]);
                         
+                            // Imprimimos la pregunta sin que se muestre la respuesta
                             for(int i = 0,j = 0; i < preguntaAzar.length(); i++){
                                 if(preguntaAzar.charAt(i) == '\n') j++;
                                 System.out.print(preguntaAzar.charAt(i));
@@ -265,12 +266,14 @@ public class Main {
 
                             random = (int) (Math.random() * 3) + 1;
 
-                            for(int i = 4; i < respuestaStrings[preguntasCategoriaRandom[random]].length(); i++){
-                                if(respuestaStrings[preguntasCategoriaRandom[random]].charAt(i) != '*') System.out.print(respuestaStrings[preguntasCategoriaRandom[random]].charAt(i));
+                            // Elegimos una respuesta al azar
+                            for(int i = 4; i < respuestaStrings[random].length(); i++){
+                                if(respuestaStrings[random].charAt(i) != '*') System.out.print(respuestaStrings[random].charAt(i));
                             }
 
                             System.out.print(" ");
 
+                            // Ponemos las demas respuestas
                             for(int i = 1; i < 4;i++){
                                 if(i != random){
                                     for(int j = 4; j < respuestaStrings[i].length(); j++){
@@ -317,8 +320,8 @@ public class Main {
         mt.guardar(pregunta, tipo, categoria, borrado, respuesta);
     }
 
+    // Formateamos la tabla para que no contenga los caracteres "*" o "_"
     public static void showTable(String tabla){
-        // Formateamos la tabla para que no contenga los caracteres "*" o "_"
         for (char c : tabla.toCharArray()) {
             if (c == '*' || c == '_') {
                 System.out.print(" ");
@@ -329,6 +332,7 @@ public class Main {
     }
 
     // Este metodo sirve para comprobar si en el array existen preguntas disponibles
+    // Devuelve un booleano que si nos da true significa que hay preguntas disponibles
     public static boolean existePregunta(int[] preguntas){
         boolean seguir = true;
 
