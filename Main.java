@@ -244,7 +244,7 @@ public class Main {
 
                 contadorTurnos++;
 
-                if (contadorTurnos >= 3) {
+                if (contadorTurnos >= 10) {
                     if (puntosJugador1 != puntosJugador2) {
                         seguir = false;
                         if (puntosJugador1 > puntosJugador2) {
