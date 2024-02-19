@@ -185,8 +185,8 @@ public class MiniTrivial {
         
             ReaderPreg.close();
             ReaderResp.close();  
-        } catch (IOException e) {
-            System.err.println("Error al leer el archivo"); 
+        } catch (Exception e) {
+ 
         }
         if(borrado == true) pregunta = "-1";
 
