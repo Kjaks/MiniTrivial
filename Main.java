@@ -242,8 +242,12 @@ public class Main {
                 System.out.println("                                                                                                           Puntos del jugador 1: " + puntosJugador1);
                 System.out.println("                                                                                                           Puntos del jugador 2: " + puntosJugador2 + "\n");
 
+                // Por cada turno sumara a un contador
                 contadorTurnos++;
 
+                // Si el contador llega a 10 y hay empate, lo que hara esto es desempatarlo
+                // en cuanto algun jugador pierda la pregunta perdera el juego, poniendo el seguir a false
+                // y rompiendo el bucle
                 if (contadorTurnos >= 10) {
                     if (puntosJugador1 != puntosJugador2) {
                         seguir = false;
@@ -304,6 +308,7 @@ public class Main {
         return seguir;
     }
 
+    // Este metodo nos sirve para sacar la pregunta al azar y nos devuelve un 1 si hemos acertado
     public static int preguntaAlAzar(int categoria){
         Scanner sc = new Scanner(System.in);
         MiniTrivial mt = new MiniTrivial();
